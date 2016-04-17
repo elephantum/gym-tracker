@@ -62,7 +62,7 @@ class GymTracker extends Component {
                 onLongPress={() => Alert.alert("Long press")}>
                 <Text
                   style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
-                >{rep.weight ? rep.weight + "кг * " : ""}{rep.n}{rep.type == "mins" ? " мин" : ""}</Text>
+                >{rep.weight ? rep.weight + "кг * " : ""}{rep.n}{item.type == "mins" ? " мин" : ""}</Text>
               </TouchableHighlight>
             </View>
           )}
