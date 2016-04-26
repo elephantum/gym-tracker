@@ -63,6 +63,60 @@ class RepEditor extends Component {
   }
 }
 
+/*
+props :: {
+  excerciseID
+  excercise :: {
+    reps :: [rep]
+  }
+  onToggleRep(excerciseID, repID)
+  onEditRep(excerciseID, repID)
+  onAddRep(excerciseID)
+}
+*/
+class ExcerciseView extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    totalReps = this.props.excercise.reps.length;
+    completeReps = this.props.excercise.reps.filter((x) => x.complete).length;
+
+    excerciseComplete = totalReps == completeReps;
+
+    return (
+      <View flexDirection="column" style={[styles.item, excerciseComplete ? styles.complete : {}]}>
+        <Text style={styles.itemText}>
+          {completeReps}/{totalReps}
+          {" "}
+          {this.props.excercise.name}
+          {this.props.excerciseID}
+        </Text>
+        <View flexDirection="row" flexWrap="wrap" alignItems="flex-start">
+          {this.props.excercise.reps.map((rep,repID) =>
+            <View key={"rep-" + repID}>
+              <TouchableHighlight
+                onPress={() => this.props.onToggleRep(this.props.excerciseID, repID)}
+                onLongPress={() => this.props.onEditRep(this.props.excerciseID, repID)}>
+                <Text
+                  style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
+                >{rep.weight ? rep.weight + "кг * " : ""}{rep.n}{this.props.excercise.type == "mins" ? " мин" : ""}</Text>
+              </TouchableHighlight>
+            </View>
+          )}
+          <TouchableHighlight
+            onPress={() => this.props.onAddRep(this.props.excerciseID)}>
+            <Text style={[styles.itemReps, excerciseComplete ? styles.complete : styles.incomplete]}>
+            +
+            </Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
+  }
+}
+
 class GymTracker extends Component {
   constructor(props) {
     super(props);
@@ -189,47 +243,19 @@ class GymTracker extends Component {
     );
   }
 
-  renderOneItem(navigator, item, sectionID, excerciseID, highlightRow) {
-    totalReps = item.reps.length;
-    completeReps = item.reps.filter((x) => x.complete).length;
-
-    excerciseComplete = totalReps == completeReps;
-
-    return (
-      <View flexDirection="column" style={[styles.item, excerciseComplete ? styles.complete : {}]}>
-        <Text style={styles.itemText}>
-          {completeReps}/{totalReps}
-          {" "}
-          {item.name}
-        </Text>
-        <View flexDirection="row" flexWrap="wrap" alignItems="flex-start">
-          {item.reps.map((rep,repID) =>
-            <View key={"rep-" + repID}>
-              <TouchableHighlight
-                onPress={() => this.toggleRep(excerciseID, repID)}
-                onLongPress={() => this.editRep(navigator, excerciseID, repID)}>
-                <Text
-                  style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
-                >{rep.weight ? rep.weight + "кг * " : ""}{rep.n}{item.type == "mins" ? " мин" : ""}</Text>
-              </TouchableHighlight>
-            </View>
-          )}
-          <TouchableHighlight
-            onPress={() => this.goAddRep(navigator, excerciseID)}>
-            <Text style={[styles.itemReps, excerciseComplete ? styles.complete : styles.incomplete]}>
-            +
-            </Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-
   renderDay(route, navigator) {
     return (
       <ListView
         dataSource={this.state.currentList}
-        renderRow={(item, sectionID, excerciseID, highlightRow) => this.renderOneItem(navigator, item, sectionID, excerciseID, highlightRow)}
+        renderRow={(item, sectionID, itemID, highlightRow) =>
+          <ExcerciseView
+            excerciseID={itemID}
+            excercise={item}
+            onToggleRep={(e, r) => this.toggleRep(e, r)}
+            onEditRep={(e, r) => this.editRep(navigator, e, r)}
+            onAddRep={(e) => this.goAddRep(navigator, e)}
+            />
+        }
       />
     );
   }
