@@ -91,7 +91,6 @@ class ExcerciseView extends Component {
           {completeReps}/{totalReps}
           {" "}
           {this.props.excercise.name}
-          {this.props.excerciseID}
         </Text>
         <View flexDirection="row" flexWrap="wrap" alignItems="flex-start">
           {this.props.excercise.reps.map((rep,repID) =>
@@ -260,21 +259,10 @@ class GymTracker extends Component {
     );
   }
 
-  renderStartScene(route, navigator) {
-    return (
-      <Text
-        style={{fontSize: 24}}
-        onPress={() => navigator.push({name: "Day", render: (r,n) => this.renderDay(r,n)})}
-        >
-        Start!
-      </Text>
-    );
-  }
-
   render() {
     return (
       <Navigator
-        initialRoute={{name: "Start", render: (route, navigator) => this.renderStartScene(route, navigator)}}
+        initialRoute={{name: "Day", render: (r,n) => this.renderDay(r,n)}}
         renderScene={(route, navigator) =>
           <View style={styles.container}>
             {route.render(route, navigator)}
