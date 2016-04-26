@@ -96,6 +96,17 @@ class GymTracker extends Component {
     });
   }
 
+  addRep(excerciseID, rep) {
+    t = this.state.data.slice();
+    t[excerciseID] = _.clone(t[excerciseID]);
+    t[excerciseID].reps.push(rep);
+
+    this.setState({
+      data:t,
+      currentList: this.state.currentList.cloneWithRows(t)
+    });
+  }
+
   editRep(navigator, excerciseID, repID) {
     excercise = this.state.data[excerciseID];
     rep = excercise.reps[repID];
@@ -108,12 +119,10 @@ class GymTracker extends Component {
       }
     });
 
-    navigator.push(
-      {
-        name: "Edit Rep",
-        render: (r,n) => this.renderEditRep(r, n),
-      }
-    )
+    navigator.push({
+      name: "Edit Rep",
+      render: (r,n) => this.renderEditRep(r, n),
+    })
   }
 
   renderEditRep(route, navigator) {
@@ -140,12 +149,54 @@ class GymTracker extends Component {
     );
   }
 
+  goAddRep(navigator, excerciseID) {
+    excercise = this.state.data[excerciseID];
+
+    if(excercise.reps.length > 0) {
+      rep = excercise.reps[excercise.reps.length - 1];
+    } else {
+      rep = {};
+    }
+
+    navigator.push({
+      name: "Add Rep",
+      rep: rep,
+      excerciseID: excerciseID,
+      render: (r,n) => this.renderAddRep(r,n)
+    });
+  }
+
+  renderAddRep(route, navigator) {
+    return(
+      <View flexDirection="column">
+        <Text
+          style={{fontSize: 20, marginBottom: 20}}
+          onPress={() => navigator.pop()}>
+          Cancel
+        </Text>
+
+        <RepEditor
+          rep={route.rep}
+          onEditDone={(rep) => {
+            this.addRep(
+              route.excerciseID,
+              rep
+            );
+            navigator.pop();
+          }}
+          />
+      </View>
+    );
+  }
+
   renderOneItem(navigator, item, sectionID, excerciseID, highlightRow) {
-    totalReps = item.reps.length
-    completeReps = item.reps.filter((x) => x.complete).length
+    totalReps = item.reps.length;
+    completeReps = item.reps.filter((x) => x.complete).length;
+
+    excerciseComplete = totalReps == completeReps;
 
     return (
-      <View flexDirection="column" style={[styles.item, totalReps == completeReps ? styles.complete : {}]}>
+      <View flexDirection="column" style={[styles.item, excerciseComplete ? styles.complete : {}]}>
         <Text style={styles.itemText}>
           {completeReps}/{totalReps}
           {" "}
@@ -163,6 +214,12 @@ class GymTracker extends Component {
               </TouchableHighlight>
             </View>
           )}
+          <TouchableHighlight
+            onPress={() => this.goAddRep(navigator, excerciseID)}>
+            <Text style={[styles.itemReps, excerciseComplete ? styles.complete : styles.incomplete]}>
+            +
+            </Text>
+          </TouchableHighlight>
         </View>
       </View>
     );
