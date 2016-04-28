@@ -94,7 +94,7 @@ class GymTracker extends Component {
   }
 
   goAddRep(navigator, excerciseID) {
-    excercise = this.state.data[excerciseID];
+    excercise = this.props.data[excerciseID];
 
     if(excercise.reps.length > 0) {
       rep = excercise.reps[excercise.reps.length - 1];
