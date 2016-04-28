@@ -9,7 +9,7 @@ import dataStore from './dataStore.js';
 
 import DayView from './DayView.js';
 
-class App extends Component {
+class GymTracker extends Component {
   render() {
     return (
       <Provider
@@ -20,4 +20,4 @@ class App extends Component {
   }
 }
 
-AppRegistry.registerComponent('GymTracker', () => App);
+AppRegistry.registerComponent('GymTracker', () => GymTracker);
