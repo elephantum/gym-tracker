@@ -20,10 +20,9 @@ import ExcerciseView from './ExcerciseView.js';
 import AddRep from './AddRep.js';
 import EditRep from './EditRep.js';
 
-class GymTracker extends Component {
+class DayView extends Component {
   constructor(props) {
     super(props);
-
     this.dayViewDataSource = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
   }
 
@@ -31,8 +30,10 @@ class GymTracker extends Component {
     navigator.push({
       name: "Edit Rep",
       render: (r,n) => this.renderEditRep(r, n),
-      excerciseID: excerciseID,
-      repID: repID
+      passProps: {
+        excerciseID: excerciseID,
+        repID: repID
+      }
     });
   }
 
@@ -40,26 +41,18 @@ class GymTracker extends Component {
     return(
       <EditRep
         navigator={navigator}
-        excerciseID={route.excerciseID}
-        repID={route.repID}
+        {...route.passProps}
       />
     );
   }
 
   goAddRep(navigator, excerciseID) {
-    excercise = this.props.data[excerciseID];
-
-    if(excercise.reps.length > 0) {
-      rep = excercise.reps[excercise.reps.length - 1];
-    } else {
-      rep = {};
-    }
-
     navigator.push({
       name: "Add Rep",
-      rep: rep,
-      excerciseID: excerciseID,
-      render: (r,n) => this.renderAddRep(r,n)
+      render: (r,n) => this.renderAddRep(r,n),
+      passProps: {
+        excerciseID: excerciseID
+      }
     });
   }
 
@@ -67,7 +60,8 @@ class GymTracker extends Component {
     return(
       <AddRep
         navigator={navigator}
-        excerciseID={route.excerciseID} />
+        {...route.passProps}
+      />
     );
   }
 
@@ -106,11 +100,10 @@ class GymTracker extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("remap state to props");
   return {data: state};
 }
 
-GymTracker = connect(mapStateToProps)(GymTracker);
+DayView = connect(mapStateToProps)(DayView);
 
 const styles = StyleSheet.create({
   container: {
@@ -120,4 +113,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default GymTracker;
+export default DayView;
