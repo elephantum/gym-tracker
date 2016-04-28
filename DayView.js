@@ -26,14 +26,6 @@ class GymTracker extends Component {
     this.dayViewDataSource = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
   }
 
-  toggleRep(excerciseID, repID) {
-    this.props.dispatch({
-      type: "TOGGLE_REP",
-      excerciseID: excerciseID,
-      repID: repID
-    });
-  }
-
   saveRep(excerciseID, repID, rep) {
     this.props.dispatch({
       type: "SET_REP",
@@ -134,8 +126,6 @@ class GymTracker extends Component {
   }
 
   renderDay(route, navigator) {
-    console.log("render day");
-
     if(!this.props.data) return (<Text>Empty</Text>);
 
     this.dayViewDataSource = this.dayViewDataSource.cloneWithRows(this.props.data);
@@ -146,7 +136,6 @@ class GymTracker extends Component {
         renderRow={(item, sectionID, itemID, highlightRow) =>
           <ExcerciseView
             excerciseID={itemID}
-            excercise={item}
             onToggleRep={(e, r) => this.toggleRep(e, r)}
             onEditRep={(e, r) => this.editRep(navigator, e, r)}
             onAddRep={(e) => this.goAddRep(navigator, e)}
@@ -170,12 +159,12 @@ class GymTracker extends Component {
   }
 }
 
-function GymTracker_mapStateToProps(state) {
+function mapStateToProps(state) {
   console.log("remap state to props");
   return {data: state};
 }
 
-GymTracker = connect(GymTracker_mapStateToProps)(GymTracker);
+GymTracker = connect(mapStateToProps)(GymTracker);
 
 const styles = StyleSheet.create({
   container: {

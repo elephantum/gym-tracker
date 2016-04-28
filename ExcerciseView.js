@@ -50,6 +50,14 @@ props :: {
 }
 */
 class ExcerciseView extends Component {
+  toggleRep(repID) {
+    this.props.dispatch({
+      type: "TOGGLE_REP",
+      excerciseID: this.props.excerciseID,
+      repID: repID
+    });
+  }
+
   render() {
     totalReps = this.props.excercise.reps.length;
     completeReps = this.props.excercise.reps.filter((x) => x.complete).length;
@@ -67,7 +75,7 @@ class ExcerciseView extends Component {
           {this.props.excercise.reps.map((rep,repID) =>
             <View key={"rep-" + repID}>
               <TouchableHighlight
-                onPress={() => this.props.onToggleRep(this.props.excerciseID, repID)}
+                onPress={() => this.toggleRep(repID)}
                 onLongPress={() => this.props.onEditRep(this.props.excerciseID, repID)}>
                 <Text
                   style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}

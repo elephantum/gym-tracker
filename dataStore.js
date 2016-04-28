@@ -27,6 +27,15 @@ function handleEvent(state, action) {
 
       return newState;
     }
+    case "SET_REP": {
+      newState = _.clone(state);
+      newExcercise = _.clone(newState[action.excerciseID]);
+
+      newExcercise.reps[action.repID] = action.rep;
+      newState[action.excerciseID] = newExcercise;
+
+      return newState;
+    }
     default: {
       return state;
     }
