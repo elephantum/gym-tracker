@@ -12,9 +12,13 @@ import React, {
   View
 } from 'react-native';
 
+import { Provider, connect } from 'react-redux';
+
 import _ from 'underscore';
 
-import {INITIAL_DATA} from './initial_data.js'
+import dataStore from './dataStore.js';
+
+import { INITIAL_DATA } from './initial_data.js'
 
 // редактор количества повторений и веса
 class RepEditor extends Component {
@@ -120,43 +124,31 @@ class GymTracker extends Component {
   constructor(props) {
     super(props);
 
-    var ds = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
-    this.state = {
-      data: INITIAL_DATA,
-      currentList: ds.cloneWithRows(INITIAL_DATA)
-    };
+    this.dayViewDataSource = new ListView.DataSource({rowHasChanged: (a, b) => a !== b});
   }
 
   toggleRep(excerciseID, repID) {
-    t = this.state.data.slice();
-    t[excerciseID] = _.clone(t[excerciseID]);
-    t[excerciseID].reps[repID].complete = ! t[excerciseID].reps[repID].complete;
-
-    this.setState({
-      data:t,
-      currentList: this.state.currentList.cloneWithRows(t)
+    this.props.dispatch({
+      type: "TOGGLE_REP",
+      excerciseID: excerciseID,
+      repID: repID
     });
   }
 
   saveRep(excerciseID, repID, rep) {
-    t = this.state.data.slice();
-    t[excerciseID] = _.clone(t[excerciseID]);
-    t[excerciseID].reps[repID] = rep;
-
-    this.setState({
-      data:t,
-      currentList: this.state.currentList.cloneWithRows(t)
+    this.props.dispatch({
+      type: "SET_REP",
+      excerciseID: excerciseID,
+      repID: repID,
+      rep: rep
     });
   }
 
   addRep(excerciseID, rep) {
-    t = this.state.data.slice();
-    t[excerciseID] = _.clone(t[excerciseID]);
-    t[excerciseID].reps.push(rep);
-
-    this.setState({
-      data:t,
-      currentList: this.state.currentList.cloneWithRows(t)
+    this.props.dispatch({
+      type: "ADD_REP",
+      excerciseID: excerciseID,
+      rep: rep
     });
   }
 
@@ -243,9 +235,15 @@ class GymTracker extends Component {
   }
 
   renderDay(route, navigator) {
+    console.log("render day");
+
+    if(!this.props.data) return (<Text>Empty</Text>);
+
+    this.dayViewDataSource = this.dayViewDataSource.cloneWithRows(this.props.data);
+
     return (
       <ListView
-        dataSource={this.state.currentList}
+        dataSource={this.dayViewDataSource}
         renderRow={(item, sectionID, itemID, highlightRow) =>
           <ExcerciseView
             excerciseID={itemID}
@@ -269,6 +267,24 @@ class GymTracker extends Component {
           </View>
         }
       />
+    );
+  }
+}
+
+function GymTracker_mapStateToProps(state) {
+  console.log("remap state to props");
+  return {data: state};
+}
+
+GymTracker = connect(GymTracker_mapStateToProps)(GymTracker)
+
+class App extends Component {
+  render() {
+    return (
+      <Provider
+        store={dataStore}>
+        <GymTracker/>
+      </Provider>
     );
   }
 }
@@ -302,4 +318,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('GymTracker', () => GymTracker);
+AppRegistry.registerComponent('GymTracker', () => App);
