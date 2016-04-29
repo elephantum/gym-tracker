@@ -1,5 +1,8 @@
 import React, {
   AppRegistry,
+  Navigator,
+  View,
+  StyleSheet,
   Component
 } from 'react-native';
 
@@ -14,10 +17,28 @@ class GymTracker extends Component {
     return (
       <Provider
         store={dataStore}>
-        <DayView/>
+        <Navigator
+          initialRoute={{name: "Day", component: DayView}}
+          renderScene={(route, navigator) =>
+            <View style={styles.container}>
+              <route.component
+                navigator={navigator}
+                {...route.passProps}
+              />
+            </View>
+          }
+        />
       </Provider>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingTop: 20,
+  }
+});
 
 AppRegistry.registerComponent('GymTracker', () => GymTracker);
