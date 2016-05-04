@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 
 import dataStore from './dataStore.js';
 
-import DayView from './DayView.js';
+import DayView from './components/DayView.js';
 
 class GymTracker extends Component {
   render() {
