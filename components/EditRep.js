@@ -20,6 +20,7 @@ class EditRep extends Component {
   saveRep(rep) {
     this.props.dispatch({
       type: "SET_REP",
+      dayID: this.props.dayID,
       excerciseID: this.props.excerciseID,
       repID: this.props.repID,
       rep: rep
@@ -52,7 +53,7 @@ class EditRep extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    rep: state[ownProps.excerciseID].reps[ownProps.repID]
+    rep: state[ownProps.dayID].excercises[ownProps.excerciseID].reps[ownProps.repID]
   };
 }
 

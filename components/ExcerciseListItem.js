@@ -30,10 +30,11 @@ props :: {
   onAddRep(excerciseID)
 }
 */
-class ExcerciseView extends Component {
+class ExcerciseListItem extends Component {
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
+      dayID: this.props.dayID,
       excerciseID: this.props.excerciseID,
       repID: repID
     });
@@ -44,6 +45,7 @@ class ExcerciseView extends Component {
       name: "Edit Rep",
       component: EditRep,
       passProps: {
+        dayID: this.props.dayID,
         excerciseID: excerciseID,
         repID: repID
       }
@@ -55,6 +57,7 @@ class ExcerciseView extends Component {
       name: "Add Rep",
       component: AddRep,
       passProps: {
+        dayID: this.props.dayID,
         excerciseID: excerciseID
       }
     });
@@ -104,11 +107,11 @@ class ExcerciseView extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    excercise: state[ownProps.excerciseID]
+    excercise: state[ownProps.dayID].excercises[ownProps.excerciseID]
   };
 }
 
-ExcerciseView = connect(mapStateToProps)(ExcerciseView);
+ExcerciseListItem = connect(mapStateToProps)(ExcerciseListItem);
 
 const styles = StyleSheet.create({
   item: {
@@ -132,4 +135,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ExcerciseView;
+export default ExcerciseListItem;
