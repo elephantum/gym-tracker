@@ -15,6 +15,7 @@ import { Provider, connect } from 'react-redux';
 
 import _ from 'underscore';
 
+import BackButton from './BackButton.js';
 import ExcerciseListItem from './ExcerciseListItem.js';
 
 class DayView extends Component {
@@ -30,6 +31,7 @@ class DayView extends Component {
 
     return (
       <View>
+        <BackButton navigator={this.props.navigator}/>
         <Text>{this.props.day.date}</Text>
         <ListView
           dataSource={this.dayViewDataSource}

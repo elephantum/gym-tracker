@@ -27,21 +27,23 @@ class DayList extends Component {
     this.listDataSource = this.listDataSource.cloneWithRows(_.keys(this.props.days));
 
     return (
-      <ListView
-        dataSource={this.listDataSource}
-        renderRow={(item) => (
-          <TouchableHighlight
-            onPress={() => this.props.navigator.push({
-              component: DayView,
-              passProps: {
-                dayID: item
-              }
-            })}
-            >
-            <Text style={styles.dayName}>{item}</Text>
-          </TouchableHighlight>
-        )}
-        />
+      <View>
+        <ListView
+          dataSource={this.listDataSource}
+          renderRow={(item) => (
+            <TouchableHighlight
+              onPress={() => this.props.navigator.push({
+                component: DayView,
+                passProps: {
+                  dayID: item
+                }
+              })}
+              >
+              <Text style={styles.dayName}>{item}</Text>
+            </TouchableHighlight>
+          )}
+          />
+      </View>
     );
   }
 }

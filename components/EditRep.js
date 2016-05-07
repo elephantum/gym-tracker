@@ -14,6 +14,7 @@ import React, {
 
 import { Provider, connect } from 'react-redux';
 
+import BackButton from './BackButton.js';
 import RepEditor from './RepEditor.js';
 
 class EditRep extends Component {
@@ -30,11 +31,7 @@ class EditRep extends Component {
   render() {
     return(
       <View flexDirection="column">
-        <Text
-          style={{fontSize: 20, marginBottom: 20}}
-          onPress={() => this.props.navigator.pop()}>
-          ← Back
-        </Text>
+        <BackButton navigator={this.props.navigator}/>
 
         <RepEditor
           rep={this.props.rep}
