@@ -2,6 +2,20 @@
 // [День{ date, excercises: [Упражнение{reps: [Подход]}] }]
 
 export let INITIAL_DATA = {
+  "2016-05-08": {
+    date: "2016-04-06",
+    excercises: [
+      {
+        name: "Эллипс",
+        type: "mins",
+        reps: [
+          {
+            n: 5
+          }
+        ]
+      }
+    ]
+  },
   "2016-04-06": {
     date: "2016-04-06",
     excercises: [

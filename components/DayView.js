@@ -30,10 +30,10 @@ class DayView extends Component {
     this.dayViewDataSource = this.dayViewDataSource.cloneWithRows(this.props.day.excercises);
 
     return (
-      <View>
+      <View flex={1}>
         <BackButton navigator={this.props.navigator}/>
-        <Text>{this.props.day.date}</Text>
         <ListView
+          flex={1}
           dataSource={this.dayViewDataSource}
           renderRow={(item, sectionID, itemID, highlightRow) =>
             <ExcerciseListItem

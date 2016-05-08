@@ -17,6 +17,8 @@ import _ from 'underscore';
 
 import DayView from './DayView.js';
 
+import globalStyle from '../globalStyle.js';
+
 class DayList extends Component {
   constructor(props) {
     super(props);
@@ -27,11 +29,13 @@ class DayList extends Component {
     this.listDataSource = this.listDataSource.cloneWithRows(_.keys(this.props.days));
 
     return (
-      <View>
+      <View flex={1}>
         <ListView
+          flex={1}
           dataSource={this.listDataSource}
           renderRow={(item) => (
             <TouchableHighlight
+              style={globalStyle.listItem}
               onPress={() => this.props.navigator.push({
                 component: DayView,
                 passProps: {
@@ -39,7 +43,7 @@ class DayList extends Component {
                 }
               })}
               >
-              <Text style={styles.dayName}>{item}</Text>
+              <Text style={globalStyle.listItemTitleText}>{item}</Text>
             </TouchableHighlight>
           )}
           />
@@ -57,9 +61,6 @@ function mapStateToProps(state) {
 DayList = connect(mapStateToProps)(DayList);
 
 var styles = StyleSheet.create({
-  dayName: {
-    fontSize: 24
-  }
 });
 
 export default DayList;

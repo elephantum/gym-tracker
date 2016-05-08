@@ -19,6 +19,8 @@ import _ from 'underscore';
 import AddRep from './AddRep.js';
 import EditRep from './EditRep.js';
 
+import globalStyle from '../globalStyle.js';
+
 /*
 props :: {
   excerciseID
@@ -70,8 +72,8 @@ class ExcerciseListItem extends Component {
     excerciseComplete = totalReps == completeReps;
 
     return (
-      <View flexDirection="column" style={[styles.item, excerciseComplete ? styles.complete : {}]}>
-        <Text style={styles.itemText}>
+      <View flexDirection="column" style={[globalStyle.listItem, excerciseComplete ? styles.complete : {}]}>
+        <Text style={globalStyle.listItemTitleText}>
           {completeReps}/{totalReps}
           {" "}
           {this.props.excercise.name}
@@ -114,15 +116,6 @@ function mapStateToProps(state, ownProps) {
 ExcerciseListItem = connect(mapStateToProps)(ExcerciseListItem);
 
 const styles = StyleSheet.create({
-  item: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 15,
-    paddingRight: 15
-  },
-  itemText: {
-    fontSize: 24
-  },
   itemReps: {
     padding: 7,
     margin: 3
