@@ -46,7 +46,6 @@ class ExerciseListItem extends Component {
       name: "Edit Rep",
       component: EditRep,
       passProps: {
-        dayID: this.props.dayID,
         exerciseID: exerciseID,
         repID: repID
       }
@@ -58,7 +57,6 @@ class ExerciseListItem extends Component {
       name: "Add Rep",
       component: AddRep,
       passProps: {
-        dayID: this.props.dayID,
         exerciseID: exerciseID
       }
     });
