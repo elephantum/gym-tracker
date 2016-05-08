@@ -14,12 +14,14 @@ import React, {
 
 import { Provider, connect } from 'react-redux';
 
+import BackButton from './BackButton.js';
 import RepEditor from './RepEditor.js';
 
 class AddRep extends Component {
   addRep(rep) {
     this.props.dispatch({
       type: "ADD_REP",
+      dayID: this.props.dayID,
       excerciseID: this.props.excerciseID,
       rep: rep
     });
@@ -28,11 +30,7 @@ class AddRep extends Component {
   render() {
     return(
       <View flexDirection="column">
-        <Text
-          style={{fontSize: 20, marginBottom: 20}}
-          onPress={() => this.props.navigator.pop()}>
-          Cancel
-        </Text>
+        <BackButton navigator={this.props.navigator}/>
 
         <RepEditor
           rep={this.props.rep}
@@ -47,7 +45,7 @@ class AddRep extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  excercise = state[ownProps.excerciseID];
+  excercise = state[ownProps.dayID].excercises[ownProps.excerciseID];
 
   if(excercise.reps.length == 0) {
     rep = {}

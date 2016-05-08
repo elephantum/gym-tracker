@@ -8,9 +8,11 @@ import React, {
 
 import { Provider } from 'react-redux';
 
-import dataStore from './dataStore.js';
+import { getInitialStore } from './dataStore.js';
 
-import DayView from './components/DayView.js';
+var dataStore = getInitialStore();
+
+import DayList from './components/DayList.js';
 
 class GymTracker extends Component {
   render() {
@@ -18,7 +20,7 @@ class GymTracker extends Component {
       <Provider
         store={dataStore}>
         <Navigator
-          initialRoute={{name: "Day", component: DayView}}
+          initialRoute={{name: "Day", component: DayList, passProps: {dayID: "2016-04-06"}}}
           renderScene={(route, navigator) =>
             <View style={styles.container}>
               <route.component
