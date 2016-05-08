@@ -35,11 +35,10 @@ class DayView extends Component {
         <ListView
           flex={1}
           dataSource={this.dayViewDataSource}
-          renderRow={(item, sectionID, itemID, highlightRow) =>
+          renderRow={(excerciseID, sectionID, itemID, highlightRow) =>
             <ExcerciseListItem
               navigator={this.props.navigator}
-              dayID={this.props.dayID}
-              excerciseID={itemID}/>
+              excerciseID={excerciseID}/>
           }
         />
       </View>
@@ -50,7 +49,7 @@ class DayView extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    day: state[ownProps.dayID]
+    day: state.days[ownProps.dayID]
   };
 }
 

@@ -36,7 +36,6 @@ class ExcerciseListItem extends Component {
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
-      dayID: this.props.dayID,
       excerciseID: this.props.excerciseID,
       repID: repID
     });
@@ -66,6 +65,8 @@ class ExcerciseListItem extends Component {
   }
 
   render() {
+    console.log(this.props.excercise);
+
     totalReps = this.props.excercise.reps.length;
     completeReps = this.props.excercise.reps.filter((x) => x.complete).length;
 
@@ -109,7 +110,7 @@ class ExcerciseListItem extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    excercise: state[ownProps.dayID].excercises[ownProps.excerciseID]
+    excercise: state.excercises[ownProps.excerciseID]
   };
 }
 

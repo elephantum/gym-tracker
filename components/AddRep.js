@@ -21,7 +21,6 @@ class AddRep extends Component {
   addRep(rep) {
     this.props.dispatch({
       type: "ADD_REP",
-      dayID: this.props.dayID,
       excerciseID: this.props.excerciseID,
       rep: rep
     });
@@ -45,7 +44,7 @@ class AddRep extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  excercise = state[ownProps.dayID].excercises[ownProps.excerciseID];
+  excercise = state.excercises[ownProps.excerciseID];
 
   if(excercise.reps.length == 0) {
     rep = {}

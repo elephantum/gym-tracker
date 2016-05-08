@@ -26,24 +26,24 @@ class DayList extends Component {
   }
 
   render() {
-    this.listDataSource = this.listDataSource.cloneWithRows(_.keys(this.props.days));
+    this.listDataSource = this.listDataSource.cloneWithRows(this.props.daysList);
 
     return (
       <View flex={1}>
         <ListView
           flex={1}
           dataSource={this.listDataSource}
-          renderRow={(item) => (
+          renderRow={(dayID) => (
             <TouchableHighlight
               style={globalStyle.listItem}
               onPress={() => this.props.navigator.push({
                 component: DayView,
                 passProps: {
-                  dayID: item
+                  dayID: dayID
                 }
               })}
               >
-              <Text style={globalStyle.listItemTitleText}>{item}</Text>
+              <Text style={globalStyle.listItemTitleText}>{this.props.days[dayID].date}</Text>
             </TouchableHighlight>
           )}
           />
@@ -54,7 +54,8 @@ class DayList extends Component {
 
 function mapStateToProps(state) {
   return {
-    days: state
+    daysList: state.daysList,
+    days: state.days
   };
 }
 
