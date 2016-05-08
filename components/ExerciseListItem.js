@@ -23,81 +23,81 @@ import globalStyle from '../globalStyle.js';
 
 /*
 props :: {
-  excerciseID
-  excercise :: {
+  exerciseID
+  exercise :: {
     reps :: [rep]
   }
-  onToggleRep(excerciseID, repID)
-  onEditRep(excerciseID, repID)
-  onAddRep(excerciseID)
+  onToggleRep(exerciseID, repID)
+  onEditRep(exerciseID, repID)
+  onAddRep(exerciseID)
 }
 */
-class ExcerciseListItem extends Component {
+class ExerciseListItem extends Component {
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
-      excerciseID: this.props.excerciseID,
+      exerciseID: this.props.exerciseID,
       repID: repID
     });
   }
 
-  goEditRep(excerciseID, repID) {
+  goEditRep(exerciseID, repID) {
     this.props.navigator.push({
       name: "Edit Rep",
       component: EditRep,
       passProps: {
         dayID: this.props.dayID,
-        excerciseID: excerciseID,
+        exerciseID: exerciseID,
         repID: repID
       }
     });
   }
 
-  goAddRep(excerciseID) {
+  goAddRep(exerciseID) {
     this.props.navigator.push({
       name: "Add Rep",
       component: AddRep,
       passProps: {
         dayID: this.props.dayID,
-        excerciseID: excerciseID
+        exerciseID: exerciseID
       }
     });
   }
 
   render() {
-    console.log(this.props.excercise);
+    console.log(this.props.exercise);
 
-    totalReps = this.props.excercise.reps.length;
-    completeReps = this.props.excercise.reps.filter((x) => x.complete).length;
+    totalReps = this.props.exercise.reps.length;
+    completeReps = this.props.exercise.reps.filter((x) => x.complete).length;
 
-    excerciseComplete = totalReps == completeReps;
+    exerciseComplete = totalReps == completeReps;
 
     return (
-      <View flexDirection="column" style={[globalStyle.listItem, excerciseComplete ? styles.complete : {}]}>
+      <View flexDirection="column" style={[globalStyle.listItem, exerciseComplete ? styles.complete : {}]}>
         <Text style={globalStyle.listItemTitleText}>
           {completeReps}/{totalReps}
           {" "}
-          {this.props.excercise.name}
+          {this.props.exercise.name}
         </Text>
         <View flexDirection="row" flexWrap="wrap" alignItems="flex-start">
-          {this.props.excercise.reps.map((rep,repID) =>
+          {this.props.exercise.reps.map((rep,repID) =>
             <View key={"rep-" + repID}>
               <TouchableHighlight
                 onPress={() => this.toggleRep(repID)}
-                onLongPress={() => this.goEditRep(this.props.excerciseID, repID)}>
+                onLongPress={() => this.goEditRep(this.props.exerciseID, repID)}>
                 <Text
                   style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
                 >
                   {rep.weight ? rep.weight + "кг * " : ""}
                   {rep.n}
-                  {this.props.excercise.type == "mins" ? " мин" : ""}
+                  {this.props.exercise.type == "mins" ? " мин" : ""}
                 </Text>
               </TouchableHighlight>
             </View>
           )}
           <TouchableHighlight
-            onPress={() => this.goAddRep(this.props.excerciseID)}>
-            <Text style={[styles.itemReps, excerciseComplete ? styles.complete : styles.incomplete]}>
+            onPress={() => this.goAddRep(this.props.exerciseID)}>
+            <Text style={[styles.itemReps, exerciseComplete ? styles.complete : styles.incomplete]}>
             +
             </Text>
           </TouchableHighlight>
@@ -110,11 +110,11 @@ class ExcerciseListItem extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    excercise: state.excercises[ownProps.excerciseID]
+    exercise: state.exercises[ownProps.exerciseID]
   };
 }
 
-ExcerciseListItem = connect(mapStateToProps)(ExcerciseListItem);
+ExerciseListItem = connect(mapStateToProps)(ExerciseListItem);
 
 const styles = StyleSheet.create({
   itemReps: {
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ExcerciseListItem;
+export default ExerciseListItem;

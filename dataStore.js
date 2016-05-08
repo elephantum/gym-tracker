@@ -8,62 +8,62 @@ export function handleEvent(state, action) {
   switch(action.type) {
     case "TOGGLE_REP": {
       /*
-      excerciseID
+      exerciseID
       repID
       */
 
-      newExcercise = _.clone(state.excercises[action.excerciseID]);
+      newExercise = _.clone(state.exercises[action.exerciseID]);
 
-      newExcercise.reps[action.repID] = {
-        ...newExcercise.reps[action.repID],
-        complete: !newExcercise.reps[action.repID].complete
+      newExercise.reps[action.repID] = {
+        ...newExercise.reps[action.repID],
+        complete: !newExercise.reps[action.repID].complete
       };
 
-      newExcercises = {
-        ...state.excercises,
-        [action.excerciseID]: newExcercise
+      newExercises = {
+        ...state.exercises,
+        [action.exerciseID]: newExercise
       }
 
       return {
         ...state,
-        excercises: newExcercises
+        exercises: newExercises
       }
     }
 
     case "ADD_REP": {
       /*
-      excerciseID
+      exerciseID
       rep
       */
 
-      newExcercise = _.clone(state.excercises[action.excerciseID]);
-      newExcercise.reps.push(action.rep);
+      newExercise = _.clone(state.exercises[action.exerciseID]);
+      newExercise.reps.push(action.rep);
 
       return {
         ...state,
-        excercises: {
-          ...state.excercises,
-          [action.excerciseID]: newExcercise
+        exercises: {
+          ...state.exercises,
+          [action.exerciseID]: newExercise
         }
       }
     }
 
     case "SET_REP": {
       /*
-      excerciseID
+      exerciseID
       repID
       rep
       */
 
-      newExcercise = _.clone(state.excercises[action.excerciseID]);
+      newExercise = _.clone(state.exercises[action.exerciseID]);
 
-      newExcercise.reps[action.repID] = action.rep;
+      newExercise.reps[action.repID] = action.rep;
 
       return {
         ...state,
-        excercises: {
-          ...state.excercises,
-          [action.excerciseID]: newExcercise
+        exercises: {
+          ...state.exercises,
+          [action.exerciseID]: newExercise
         }
       }
     }

@@ -1,19 +1,19 @@
 // Структура данных одного дня:
-// [День{ date, excercises: [Упражнение{reps: [Подход]}] }]
+// [День{ date, exercises: [Упражнение{reps: [Подход]}] }]
 
 export let INITIAL_DATA = {
   daysList: [1, 2],
   days: {
     1: {
       date: "2016-05-08",
-      excercises: [1]
+      exercises: [1]
     },
     2: {
       date: "2016-04-06",
-      excercises: [2, 3]
+      exercises: [2, 3]
     }
   },
-  excercises: {
+  exercises: {
     1: {
       name: "Эллипс 1",
       type: "mins",
