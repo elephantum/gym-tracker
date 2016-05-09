@@ -16,7 +16,7 @@ import { Provider, connect } from 'react-redux';
 import _ from 'underscore';
 
 import BackButton from './BackButton.js';
-import ExcerciseListItem from './ExcerciseListItem.js';
+import ExerciseListItem from './ExerciseListItem.js';
 
 class DayView extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class DayView extends Component {
   render() {
     if(!this.props.day) return (<Text>Empty</Text>);
 
-    this.dayViewDataSource = this.dayViewDataSource.cloneWithRows(this.props.day.excercises);
+    this.dayViewDataSource = this.dayViewDataSource.cloneWithRows(this.props.day.exercises);
 
     return (
       <View flex={1}>
@@ -35,11 +35,10 @@ class DayView extends Component {
         <ListView
           flex={1}
           dataSource={this.dayViewDataSource}
-          renderRow={(item, sectionID, itemID, highlightRow) =>
-            <ExcerciseListItem
+          renderRow={(exerciseID, sectionID, itemID, highlightRow) =>
+            <ExerciseListItem
               navigator={this.props.navigator}
-              dayID={this.props.dayID}
-              excerciseID={itemID}/>
+              exerciseID={exerciseID}/>
           }
         />
       </View>
@@ -50,7 +49,7 @@ class DayView extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    day: state[ownProps.dayID]
+    day: state.days[ownProps.dayID]
   };
 }
 

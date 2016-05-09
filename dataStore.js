@@ -8,58 +8,58 @@ export function handleEvent(state, action) {
   switch(action.type) {
     case "TOGGLE_REP": {
       /*
-      dayID
-      excerciseID
       repID
       */
 
-      newState = _.clone(state);
-      newDay = _.clone(newState[action.dayID]);
-      newExcercise = _.clone(newDay.excercises[action.excerciseID]);
-      newRep = _.clone(newExcercise.reps[action.repID]);
-
-      newRep.complete = !newRep.complete;
-
-      newExcercise.reps[action.repID] = newRep;
-      newDay.excercises[action.excerciseID] = newExcercise;
-      newState[action.dayID] = newDay;
-
-      return newState;
+      return {
+        ...state,
+        reps: {
+          ...state.reps,
+          [action.repID]: {
+            ...state.reps[action.repID],
+            complete: !state.reps[action.repID].complete
+          }
+        }
+      }
     }
+
     case "ADD_REP": {
       /*
-      dayID
-      excerciseID
+      exerciseID
       rep
       */
 
-      newState = _.clone(state);
-      newDay = _.clone(newState[action.dayID]);
-      newExcercise = _.clone(newDay.excercises[action.excerciseID]);
+      repID = Math.max(...Object.keys(state.reps)) + 1;
 
-      newExcercise.reps.push(action.rep);
-      newDay.excercises[action.excerciseID] = newExcercise;
-      newState[action.dayID] = newDay;
+      newExercise = _.clone(state.exercises[action.exerciseID]);
+      newExercise.reps = [...newExercise.reps, repID];
 
-      return newState;
+      return {
+        ...state,
+        exercises: {
+          ...state.exercises,
+          [action.exerciseID]: newExercise
+        },
+        reps: {
+          ...state.reps,
+          [repID]: action.rep
+        }
+      }
     }
+
     case "SET_REP": {
       /*
-      dayID
-      excerciseID
       repID
       rep
       */
 
-      newState = _.clone(state);
-      newDay = _.clone(newState[action.dayID]);
-      newExcercise = _.clone(newDay.excercises[action.excerciseID]);
-
-      newExcercise.reps[action.repID] = action.rep;
-      newDay.excercises[action.excerciseID] = newExcercise;
-      newState[action.dayID] = newDay;
-
-      return newState;
+      return {
+        ...state,
+        reps: {
+          ...state.reps,
+          [action.repID]: action.rep
+        }
+      }
     }
     default: {
       return state;
