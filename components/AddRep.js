@@ -49,7 +49,7 @@ function mapStateToProps(state, ownProps) {
   if(exercise.reps.length == 0) {
     rep = {}
   } else {
-    rep = exercise.reps[exercise.reps.length - 1];
+    rep = state.reps[exercise.reps[exercise.reps.length - 1]];
   }
 
   return {

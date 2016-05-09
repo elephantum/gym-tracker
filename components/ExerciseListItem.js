@@ -36,7 +36,6 @@ class ExerciseListItem extends Component {
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
-      exerciseID: this.props.exerciseID,
       repID: repID
     });
   }
@@ -46,7 +45,6 @@ class ExerciseListItem extends Component {
       name: "Edit Rep",
       component: EditRep,
       passProps: {
-        exerciseID: exerciseID,
         repID: repID
       }
     });
@@ -64,9 +62,10 @@ class ExerciseListItem extends Component {
 
   render() {
     console.log(this.props.exercise);
+    console.log(this.props.reps);
 
     totalReps = this.props.exercise.reps.length;
-    completeReps = this.props.exercise.reps.filter((x) => x.complete).length;
+    completeReps = this.props.exercise.reps.filter((x) => this.props.reps[x].complete).length;
 
     exerciseComplete = totalReps == completeReps;
 
@@ -78,21 +77,24 @@ class ExerciseListItem extends Component {
           {this.props.exercise.name}
         </Text>
         <View flexDirection="row" flexWrap="wrap" alignItems="flex-start">
-          {this.props.exercise.reps.map((rep,repID) =>
-            <View key={"rep-" + repID}>
-              <TouchableHighlight
-                onPress={() => this.toggleRep(repID)}
-                onLongPress={() => this.goEditRep(this.props.exerciseID, repID)}>
-                <Text
-                  style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
-                >
-                  {rep.weight ? rep.weight + "кг * " : ""}
-                  {rep.n}
-                  {this.props.exercise.type == "mins" ? " мин" : ""}
-                </Text>
-              </TouchableHighlight>
-            </View>
-          )}
+          {this.props.exercise.reps.map((repID) => {
+            rep = this.props.reps[repID];
+            return (
+              <View key={"rep-" + repID}>
+                <TouchableHighlight
+                  onPress={() => this.toggleRep(repID)}
+                  onLongPress={() => this.goEditRep(this.props.exerciseID, repID)}>
+                  <Text
+                    style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
+                  >
+                    {rep.weight ? rep.weight + "кг * " : ""}
+                    {rep.n}
+                    {this.props.exercise.type == "mins" ? " мин" : ""}
+                  </Text>
+                </TouchableHighlight>
+              </View>
+            );
+          })}
           <TouchableHighlight
             onPress={() => this.goAddRep(this.props.exerciseID)}>
             <Text style={[styles.itemReps, exerciseComplete ? styles.complete : styles.incomplete]}>
@@ -108,7 +110,8 @@ class ExerciseListItem extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     ...ownProps,
-    exercise: state.exercises[ownProps.exerciseID]
+    exercise: state.exercises[ownProps.exerciseID],
+    reps: _.pick(state.reps, state.exercises[ownProps.exerciseID].reps)
   };
 }
 

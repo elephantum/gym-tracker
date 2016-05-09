@@ -8,25 +8,18 @@ export function handleEvent(state, action) {
   switch(action.type) {
     case "TOGGLE_REP": {
       /*
-      exerciseID
       repID
       */
 
-      newExercise = _.clone(state.exercises[action.exerciseID]);
-
-      newExercise.reps[action.repID] = {
-        ...newExercise.reps[action.repID],
-        complete: !newExercise.reps[action.repID].complete
-      };
-
-      newExercises = {
-        ...state.exercises,
-        [action.exerciseID]: newExercise
-      }
-
       return {
         ...state,
-        exercises: newExercises
+        reps: {
+          ...state.reps,
+          [action.repID]: {
+            ...state.reps[action.repID],
+            complete: !state.reps[action.repID].complete
+          }
+        }
       }
     }
 
@@ -36,34 +29,35 @@ export function handleEvent(state, action) {
       rep
       */
 
+      repID = Math.max(...Object.keys(state.reps)) + 1;
+
       newExercise = _.clone(state.exercises[action.exerciseID]);
-      newExercise.reps.push(action.rep);
+      newExercise.reps = [...newExercise.reps, repID];
 
       return {
         ...state,
         exercises: {
           ...state.exercises,
           [action.exerciseID]: newExercise
+        },
+        reps: {
+          ...state.reps,
+          [repID]: action.rep
         }
       }
     }
 
     case "SET_REP": {
       /*
-      exerciseID
       repID
       rep
       */
 
-      newExercise = _.clone(state.exercises[action.exerciseID]);
-
-      newExercise.reps[action.repID] = action.rep;
-
       return {
         ...state,
-        exercises: {
-          ...state.exercises,
-          [action.exerciseID]: newExercise
+        reps: {
+          ...state.reps,
+          [action.repID]: action.rep
         }
       }
     }
