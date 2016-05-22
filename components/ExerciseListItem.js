@@ -21,36 +21,23 @@ import EditRep from './EditRep.js';
 
 import globalStyle from '../globalStyle.js';
 
+/*
+props:
+  editMode:
+    none - редактора нет
+    add - добавление повтора
+    edit - редактирование повтора
+  editRepID - идентификатор редактируемого повтора
+
+  onEditRep - колбек для редактирования повтора
+  onAddRep - колбек для добавления повтора
+  onEditDone - колбек для закрытия редактора
+*/
 class ExerciseListItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      /*
-      add/edit
-      */
-      mode: 'none',
-      activeRepID: null // rep that is currently edited
-    };
-  }
-
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
       repID: repID
-    });
-  }
-
-  goEditRep(exerciseID, repID) {
-    this.setState({
-      mode: "edit",
-      activeRepID: repID
-    });
-  }
-
-  goAddRep(exerciseID) {
-    this.setState({
-      mode: "add"
     });
   }
 
@@ -60,22 +47,18 @@ class ExerciseListItem extends Component {
 
     exerciseComplete = totalReps == completeReps;
 
-    if(this.state.mode == "add") {
+    if(this.props.editMode == "add") {
       modeElem = (
         <AddRep
           exerciseID={this.props.exerciseID}
-          onDone={
-            () => this.setState({mode: "none"})
-          }
+          onDone={this.props.onEditDone}
         />
       );
-    } else if (this.state.mode == "edit") {
+    } else if (this.props.editMode == "edit") {
       modeElem = (
         <EditRep
-          repID={this.state.activeRepID}
-          onDone={
-            () => this.setState({mode: "none", activeRepID: null})
-          }
+          repID={this.props.editRepID}
+          onDone={this.props.onEditDone}
         />
       );
     } else {
@@ -84,6 +67,11 @@ class ExerciseListItem extends Component {
 
     return (
       <View flexDirection="column" style={[globalStyle.listItem, exerciseComplete ? styles.complete : {}]}>
+        <Text>
+          {this.props.editMode};
+          {this.props.exerciseID};
+          {this.props.editRepID}
+        </Text>
         <Text style={globalStyle.listItemTitleText}>
           {completeReps}/{totalReps}
           {" "}
@@ -96,7 +84,7 @@ class ExerciseListItem extends Component {
               <View key={"rep-" + repID}>
                 <TouchableHighlight
                   onPress={() => this.toggleRep(repID)}
-                  onLongPress={() => this.goEditRep(this.props.exerciseID, repID)}>
+                  onLongPress={() => this.props.onEditRep(repID)}>
                   <Text
                     style={[styles.itemReps, rep.complete ? styles.complete : styles.incomplete]}
                   >
@@ -109,7 +97,7 @@ class ExerciseListItem extends Component {
             );
           })}
           <TouchableHighlight
-            onPress={() => this.goAddRep(this.props.exerciseID)}>
+            onPress={() => this.props.onAddRep()}>
             <Text style={[styles.itemReps, exerciseComplete ? styles.complete : styles.incomplete]}>
             +
             </Text>
