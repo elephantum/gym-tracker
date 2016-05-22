@@ -13,6 +13,13 @@ import React, {
 } from 'react-native';
 
 // редактор количества повторений и веса
+/*
+props:
+  rep
+  actionText
+  onEditDone
+  onCancel
+*/
 class RepEditor extends Component {
   constructor(props) {
     super(props);
@@ -46,14 +53,27 @@ class RepEditor extends Component {
             }}
             keyboardType="numeric"/>
         </View>
-        <Text
-          style={{fontSize: 20}}
-          onPress={() => this.props.onEditDone({
-            n: this.state.n,
-            weight: this.state.weight,
-            complete: true})}>
-          Set Complete
-        </Text>
+        <View flexDirection="row">
+          <TouchableHighlight
+            onPress={() => this.props.onEditDone({
+              n: this.state.n,
+              weight: this.state.weight,
+              complete: true})}
+          >
+            <Text style={{fontSize: 20}}>
+              {this.props.actionText}
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={() => this.props.onCancel()}
+          >
+            <Text
+              style={{fontSize: 20}}
+            >
+              Cancel
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }

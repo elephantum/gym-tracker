@@ -21,18 +21,19 @@ import EditRep from './EditRep.js';
 
 import globalStyle from '../globalStyle.js';
 
-/*
-props :: {
-  exerciseID
-  exercise :: {
-    reps :: [rep]
-  }
-  onToggleRep(exerciseID, repID)
-  onEditRep(exerciseID, repID)
-  onAddRep(exerciseID)
-}
-*/
 class ExerciseListItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      /*
+      add/edit
+      */
+      mode: 'none',
+      activeRepID: null // rep that is currently edited
+    };
+  }
+
   toggleRep(repID) {
     this.props.dispatch({
       type: "TOGGLE_REP",
@@ -41,33 +42,45 @@ class ExerciseListItem extends Component {
   }
 
   goEditRep(exerciseID, repID) {
-    this.props.navigator.push({
-      name: "Edit Rep",
-      component: EditRep,
-      passProps: {
-        repID: repID
-      }
+    this.setState({
+      mode: "edit",
+      activeRepID: repID
     });
   }
 
   goAddRep(exerciseID) {
-    this.props.navigator.push({
-      name: "Add Rep",
-      component: AddRep,
-      passProps: {
-        exerciseID: exerciseID
-      }
+    this.setState({
+      mode: "add"
     });
   }
 
   render() {
-    console.log(this.props.exercise);
-    console.log(this.props.reps);
-
     totalReps = this.props.exercise.reps.length;
     completeReps = this.props.exercise.reps.filter((x) => this.props.reps[x].complete).length;
 
     exerciseComplete = totalReps == completeReps;
+
+    if(this.state.mode == "add") {
+      modeElem = (
+        <AddRep
+          exerciseID={this.props.exerciseID}
+          onDone={
+            () => this.setState({mode: "none"})
+          }
+        />
+      );
+    } else if (this.state.mode == "edit") {
+      modeElem = (
+        <EditRep
+          repID={this.state.activeRepID}
+          onDone={
+            () => this.setState({mode: "none", activeRepID: null})
+          }
+        />
+      );
+    } else {
+      modeElem = [];
+    }
 
     return (
       <View flexDirection="column" style={[globalStyle.listItem, exerciseComplete ? styles.complete : {}]}>
@@ -102,6 +115,7 @@ class ExerciseListItem extends Component {
             </Text>
           </TouchableHighlight>
         </View>
+        {modeElem}
       </View>
     );
   }

@@ -17,6 +17,11 @@ import { Provider, connect } from 'react-redux';
 import BackButton from './BackButton.js';
 import RepEditor from './RepEditor.js';
 
+/*
+props:
+  exerciseID
+  onDone
+*/
 class AddRep extends Component {
   addRep(rep) {
     this.props.dispatch({
@@ -29,15 +34,15 @@ class AddRep extends Component {
   render() {
     return(
       <View flexDirection="column">
-        <BackButton navigator={this.props.navigator}/>
-
         <RepEditor
           rep={this.props.rep}
+          actionText="Add"
           onEditDone={(rep) => {
             this.addRep(rep);
-            this.props.navigator.pop();
+            this.props.onDone();
           }}
-          />
+          onCancel={() => this.props.onDone()}
+        />
       </View>
     );
   }

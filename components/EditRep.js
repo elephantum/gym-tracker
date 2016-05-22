@@ -17,6 +17,11 @@ import { Provider, connect } from 'react-redux';
 import BackButton from './BackButton.js';
 import RepEditor from './RepEditor.js';
 
+/*
+props:
+  repID
+  onDone
+*/
 class EditRep extends Component {
   saveRep(rep) {
     this.props.dispatch({
@@ -29,17 +34,15 @@ class EditRep extends Component {
   render() {
     return(
       <View flexDirection="column">
-        <BackButton navigator={this.props.navigator}/>
-
         <RepEditor
           rep={this.props.rep}
+          actionText="Save"
           onEditDone={(rep) => {
-            this.saveRep(
-              rep
-            );
-            this.props.navigator.pop();
+            this.saveRep(rep);
+            this.props.onDone();
           }}
-          />
+          onCancel={() => this.props.onDone()}
+        />
       </View>
     );
   }
