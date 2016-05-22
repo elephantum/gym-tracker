@@ -67,11 +67,6 @@ class ExerciseListItem extends Component {
 
     return (
       <View flexDirection="column" style={[globalStyle.listItem, exerciseComplete ? styles.complete : {}]}>
-        <Text>
-          {this.props.editMode};
-          {this.props.exerciseID};
-          {this.props.editRepID}
-        </Text>
         <Text style={globalStyle.listItemTitleText}>
           {completeReps}/{totalReps}
           {" "}
